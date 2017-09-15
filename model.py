@@ -91,7 +91,7 @@ def train(model, num_steps, batch_size, mnist):
 
     for x in range(num_steps):
         xbatch, ybatch = mnist.train.next_batch(batch_size)
-        xbatch = np.reshape(xbatch, [28,28,1])
+        xbatch = np.reshape(xbatch, [-1, 28,28,1])
         feed_dict = {'input:0': xbatch, 'output:0': ybatch}
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
