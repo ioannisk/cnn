@@ -95,16 +95,17 @@ def train(model, num_steps, batch_size, mnist):
         feed_dict = {'input:0': xbatch, 'output:0': ybatch}
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
-        print(accuracy)
+        if i % 100 == 0:
+            print(accuracy)
 
 
 if __name__ == '__main__':
     mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-    model = CNN(num_modules=1,
+    model = CNN(num_modules=2,
                 num_fc=2,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
-                num_channels=1,
+                num_channels=32,
                 num_hidden=100,
                 learning_rate=0.01)
     train(model, 2000, 100, mnist)
