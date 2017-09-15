@@ -47,7 +47,7 @@ class CNN:
         x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
 
         for i in range(self.num_channels):
-            with tf.variable_scope('module_{}'.format(i))):
+            with tf.variable_scope('module_{}'.format(i)):
                 x = self.conv2d(x, 'conv1')
                 x = self.conv2d(x, 'conv2')
                 x = self.pool(x)
@@ -91,7 +91,7 @@ def train(model, num_steps, batch_size):
         feed_dict = {'input:0': xbatch, 'output:0', ybatch}
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
-
+        print(accuracy)
 
 if __name__ == '__main__':
     model = CNN(num_modules=2,
