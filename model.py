@@ -73,7 +73,7 @@ class CNN:
     def train(self, loss):
         global_step = tf.Variable(0, name='global_step', trainable=False)
         opt = tf.train.AdamOptimizer(self.learning_rate)
-        return opt.minize(loss, global_step)
+        return opt.minimize(loss, global_step)
 
 
 
