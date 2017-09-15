@@ -88,7 +88,7 @@ def train(model, num_steps, batch_size):
 
     for x in range(num_steps):
         xbatch, ybatch = mnist.train.next_batch(batch_size)
-        feed_dict = {'input:0': xbatch, 'output:0', ybatch}
+        feed_dict = {'input:0': xbatch, 'output:0': ybatch}
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
         print(accuracy)
