@@ -97,7 +97,7 @@ if __name__ == '__main__':
     model = CNN(num_modules=2,
                 num_fc=2,
                 ksize=3,
-                kstride=2,
+                kstride=[1, 2, 2, 1],
                 num_channels=64,
                 num_hidden=100,
                 learning_rate=0.01)
