@@ -29,7 +29,7 @@ class CNN:
             return tf.nn.relu(h)
 
     def pool(self, x):
-        return tf.max_pool(x,
+        return tf.nn.max_pool(x,
                            ksize=[1, 2, 2, 1],
                            strides=[1, 2, 2, 1],
                            padding='SAME',
