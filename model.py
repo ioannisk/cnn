@@ -65,7 +65,8 @@ class CNN:
         return logits
 
     def loss(self, logits):
-        y = tf.placeholder(tf.float32, [None, 10], 'output')
+        g = tf.get_default_graph()
+        y = g.get_tensor_by_name('output:0')
         correct_prediction = tf.equal(tf.argmax(logits,1), tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
@@ -78,6 +79,7 @@ class CNN:
 
 
 def train(model, num_steps, batch_size, mnist):
+    y = tf.placeholder(tf.float32, [None, 10], 'output')
     nn = model.inference()
     loss_nn, accuracy_nn = model.loss(nn)
     train_nn = model.train(loss_nn)
