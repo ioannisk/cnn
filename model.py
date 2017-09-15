@@ -44,7 +44,7 @@ class CNN:
             return activation(tf.matmul(x, w) + b)
 
     def inference(self):
-        x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
+        x = tf.placeholder(tf.float32, [None, 28, 28, 1], 'input')
 
         for i in range(self.num_channels):
             with tf.variable_scope('module_{}'.format(i)):
