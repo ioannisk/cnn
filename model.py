@@ -2,8 +2,6 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 
-mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-
 class CNN:
     def __init__(self,
                  num_modules,
@@ -80,7 +78,7 @@ class CNN:
 
 
 
-def train(model, num_steps, batch_size):
+def train(model, num_steps, batch_size, mnist):
     nn = model.inference()
     loss_nn, accuracy_nn = model.loss(nn)
     train_nn = model.train(loss_nn)
@@ -96,6 +94,7 @@ def train(model, num_steps, batch_size):
         print(accuracy)
 
 if __name__ == '__main__':
+    mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
     model = CNN(num_modules=2,
                 num_fc=2,
                 ksize=3,
@@ -103,5 +102,5 @@ if __name__ == '__main__':
                 num_channels=64,
                 num_hidden=100,
                 learning_rate=0.01)
-    train(model, 2000, 100)
+    train(model, 2000, 100, mnist)
 
