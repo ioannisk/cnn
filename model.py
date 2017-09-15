@@ -83,7 +83,7 @@ def train(model, num_steps, batch_size, mnist):
     train_nn = model.train(loss_nn)
 
     sess = tf.Session()
-    sess.run(tf.global_variable_initializer())
+    sess.run(tf.global_variables_initializer())
 
     for x in range(num_steps):
         xbatch, ybatch = mnist.train.next_batch(batch_size)
