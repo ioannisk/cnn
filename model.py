@@ -89,7 +89,7 @@ def train(model, num_steps, batch_size, mnist):
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
 
-    for x in range(num_steps):
+    for i in range(num_steps):
         xbatch, ybatch = mnist.train.next_batch(batch_size)
         xbatch = np.reshape(xbatch, [-1, 28,28,1])
         feed_dict = {'input:0': xbatch, 'output:0': ybatch}
