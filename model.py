@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 
+
 class CNN:
     def __init__(self,
                  num_modules,
@@ -67,15 +68,13 @@ class CNN:
         y = tf.placeholder(tf.float32, [None, 10], 'output')
         correct_prediction = tf.equal(tf.argmax(logits,1), tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        loss = tf.losses.softmax_cross_entropy(logits, y, scope='cross_entropy')
+        loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
         return loss, accuracy
 
     def train(self, loss):
         global_step = tf.Variable(0, name='global_step', trainable=False)
         opt = tf.train.AdamOptimizer(self.learning_rate)
         return opt.minimize(loss, global_step)
-
-
 
 
 def train(model, num_steps, batch_size, mnist):
@@ -92,6 +91,7 @@ def train(model, num_steps, batch_size, mnist):
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
         print(accuracy)
+
 
 if __name__ == '__main__':
     mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
