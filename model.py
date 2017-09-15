@@ -53,7 +53,7 @@ class CNN:
                 x = self.pool(x)
 
         isize = np.prod([d.value for d in x.shape[-3:]])
-        x = tf.reshape(x, [None, isize])
+        x = tf.reshape(x, [-1, isize])
         for i in range(self.num_fc):
             scope = 'fully_connected_{}'.format(i)
             x = self.fully_connected(x, self.num_hidden, scope)
