@@ -45,7 +45,8 @@ class CNN:
             return activation(tf.matmul(x, w) + b)
 
     def inference(self):
-        x = tf.placeholder(tf.float32, [None, 28, 28, 1], 'input')
+        g = tf.get_default_graph()
+        x = g.get_tensor_by_name('input:0')
 
         for i in range(self.num_channels):
             with tf.variable_scope('module_{}'.format(i)):
@@ -79,6 +80,7 @@ class CNN:
 
 
 def train(model, num_steps, batch_size, mnist):
+    x = tf.placeholder(tf.float32, [None, 28, 28, 1], 'input')
     y = tf.placeholder(tf.float32, [None, 10], 'output')
     nn = model.inference()
     loss_nn, accuracy_nn = model.loss(nn)
