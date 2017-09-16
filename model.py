@@ -103,7 +103,7 @@ class Trainer:
 
     def trainer(self):
         for e in range(self.num_epochs):
-            data = list(zip(x_train, y_train))
+            data = list(zip(self.x_train, self.y_train))
             shuffle(data)
             x_train, y_train = zip(*data)
             train_epoch()
@@ -121,10 +121,23 @@ class Trainer:
             if i % 1000 == 0:
                 train_writer.add_summary(b_summ, i)
                 print(b_accuracy, b_loss)
-
     # def evaluate(self)
 
 
+# def evaluate(model, test_data):
+#         for i in range(0, len(x_train), batch_size):
+#             xbatch = x_train[i:i+batch_size]
+#             ybatch = y_train[i:i+batch_size]
+
+#             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
+#             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
+
+#             calc = [loss, accuracy, train, summary]
+#             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
+#             if i % 1000 == 0:
+#                 train_writer.add_summary(b_summ, i)
+
+#                 print(b_accuracy, b_loss)
 
 
 
@@ -193,7 +206,7 @@ if __name__ == '__main__':
                 num_channels=[32,64],
                 num_hidden=[600],
                 learning_rate=0.001)
-    # train(model, batch_size, train_data, test_data, num_epochs=num_epochs)
-    trainer = Trainer(model, batch_size, train_data, test_data)
-    trainer.trainer()
+    train(model, batch_size, train_data, test_data, num_epochs=num_epochs)
+    # trainer = Trainer(model, batch_size, train_data, test_data)
+    # trainer.trainer()
 
