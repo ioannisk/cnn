@@ -63,7 +63,7 @@ class CNN:
 
         return logits
 
-    def evaluate(self, logits):
+    def loss_acc(self, logits):
         correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(self.y, logits, scope='cross_entropy')
@@ -77,50 +77,54 @@ class CNN:
         opt = tf.train.AdamOptimizer(self.learning_rate)
         return opt.minimize(loss, global_step)
 
+#     def fit(self, ):
 
-class Trainer:
-    def __init__(self, model, batch_size, train_data, test_data, num_epochs=200):
-        x_train, y_train = train_data
-        x_test, y_test = test_data
-        self.model = model
-        self.batch_size = batch_size
-        self.x_train = x_train
-        self.y_train = y_train
-        self.x_test = x_test
-        self.y_test = y_test
-        self.num_epochs = num_epochs
+#     def
 
-        self.logits = model.inference()
-        self.loss, self.accuracy = model.evaluate(self.logits)
-        self.train = model.train(self.loss)
 
-        self.sess = tf.Session()
-        self.sess.run(tf.global_variables_initializer())
+# class Trainer:
+#     def __init__(self, model, batch_size, train_data, test_data, num_epochs=200):
+#         x_train, y_train = train_data
+#         x_test, y_test = test_data
+#         self.model = model
+#         self.batch_size = batch_size
+#         self.x_train = x_train
+#         self.y_train = y_train
+#         self.x_test = x_test
+#         self.y_test = y_test
+#         self.num_epochs = num_epochs
 
-        self.summary = tf.summary.merge_all()
-        self.train_writer = tf.summary.FileWriter('output/train', self.sess.graph)
-        self.test_writer = tf.summary.FileWriter('output/test')
+#         self.logits = model.inference()
+#         self.loss, self.accuracy = model.evaluate(self.logits)
+#         self.train = model.train(self.loss)
 
-    def trainer(self):
-        for e in range(self.num_epochs):
-            data = list(zip(self.x_train, self.y_train))
-            shuffle(data)
-            x_train, y_train = zip(*data)
-            train_epoch()
+#         self.sess = tf.Session()
+#         self.sess.run(tf.global_variables_initializer())
 
-    def train_epoch(self):
-        for i in range(0, len(self.x_train), self.batch_size):
-            xbatch = self.x_train[i:i+self.batch_size]
-            ybatch = self.y_train[i:i+self.batch_size]
+#         self.summary = tf.summary.merge_all()
+#         self.train_writer = tf.summary.FileWriter('output/train', self.sess.graph)
+#         self.test_writer = tf.summary.FileWriter('output/test')
 
-            xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
-            feed_dict = {'input:0': xbatch, 'output:0': ybatch}
+#     def trainer(self):
+#         for e in range(self.num_epochs):
+#             data = list(zip(self.x_train, self.y_train))
+#             shuffle(data)
+#             x_train, y_train = zip(*data)
+#             train_epoch()
 
-            calc = [self.loss, self.accuracy, self.train, self.summary]
-            b_loss, b_accuracy, _, b_summ = self.sess.run(calc, feed_dict)
-            if i % 1000 == 0:
-                train_writer.add_summary(b_summ, i)
-                print(b_accuracy, b_loss)
+#     def train_epoch(self):
+#         for i in range(0, len(self.x_train), self.batch_size):
+#             xbatch = self.x_train[i:i+self.batch_size]
+#             ybatch = self.y_train[i:i+self.batch_size]
+
+#             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
+#             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
+
+#             calc = [self.loss, self.accuracy, self.train, self.summary]
+#             b_loss, b_accuracy, _, b_summ = self.sess.run(calc, feed_dict)
+#             if i % 1000 == 0:
+#                 train_writer.add_summary(b_summ, i)
+#                 print(b_accuracy, b_loss)
     # def evaluate(self)
 
 
@@ -147,7 +151,7 @@ def train(model, batch_size, train_data, test_data,  num_epochs):
     x_test, y_test = test_data
 
     logits = model.inference()
-    loss, accuracy = model.evaluate(logits)
+    loss, accuracy = model.loss_acc(logits)
     train = model.train(loss)
 
     sess = tf.Session()
