@@ -194,6 +194,6 @@ if __name__ == '__main__':
                 num_hidden=[600],
                 learning_rate=0.001)
     # train(model, batch_size, train_data, test_data, num_epochs=num_epochs)
-    trainer = Trainer(model, batch_size, train_data, test_data, num_epochs=num_epochs)
+    trainer = Trainer(model, batch_size, train_data, test_data)
     trainer.train()
 
