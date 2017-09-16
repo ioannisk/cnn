@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
+from random import shuffle
 
 
 class CNN:
@@ -82,9 +83,11 @@ class CNN:
         return opt.minimize(loss, global_step)
 
 
-def train(model, num_steps, batch_size, mnist):
-    x = tf.placeholder(tf.float32, [None, 28, 28, 1], 'input')
-    y = tf.placeholder(tf.float32, [None, 10], 'output')
+def train(model, num_steps, batch_size, data, epochs):
+    x_train = data['data']
+    y_train = data['fine_labels']
+    x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
+    y = tf.placeholder(tf.float32, [None, 100], 'output')
     nn = model.inference()
     loss_nn, accuracy_nn = model.loss(nn)
     train_nn = model.train(loss_nn)
@@ -95,17 +98,26 @@ def train(model, num_steps, batch_size, mnist):
     writer = tf.summary.FileWriter('output', sess.graph)
     summary = tf.summary.merge_all()
 
-    for i in range(num_steps):
-        xbatch, ybatch = mnist.train.next_batch(batch_size)
-        xbatch = np.reshape(xbatch, [-1, 28, 28,1])
-        feed_dict = {'input:0': xbatch, 'output:0': ybatch}
+    # batch_start = 0
+    # for i in range(num_steps):
+        # xbatch, ybatch = mnist.train.next_batch(batch_size)
+    for e in range(epochs):
+        data = list(zip(x_train, y_train))
+        shuffle(data)
+        x_train, y_train = zip(*data)
+        for i in range(0, len(x_train), batch_size):
+            xbatch = x_train[i:i+batch_size]
+            ybatch = y_train[i:i+batch_size]
 
-        calc = [loss_nn, accuracy_nn, train_nn, summary]
-        loss, accuracy, _, s = sess.run(calc, feed_dict)
-        writer.add_summary(s, i)
+            xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
+            feed_dict = {'input:0': xbatch, 'output:0': ybatch}
 
-        if i % 100 == 0:
-            print(accuracy, loss)
+            calc = [loss_nn, accuracy_nn, train_nn, summary]
+            loss, accuracy, _, s = sess.run(calc, feed_dict)
+            writer.add_summary(s, i)
+
+            if i % 100 == 0:
+                print(accuracy, loss)
 
 
 def unpickle():
@@ -116,17 +128,14 @@ def unpickle():
 
 
 if __name__ == '__main__':
-    dd = unpickle()
-    # print(len(dd))
-    for key in dd:
-        print(len(dd[key]), key)
-    # mnist = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
-    # model = CNN(num_modules=3,
-    #             num_fc=2,
-    #             ksize=3,
-    #             kstride=[1, 2, 2, 1],
-    #             num_channels=20,
-    #             num_hidden=300,
-    #             learning_rate=0.005)
-    # train(model, 20000, 100, mnist)
+    data = unpickle()
+    # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
+    model = CNN(num_modules=3,
+                num_fc=2,
+                ksize=3,
+                kstride=[1, 2, 2, 1],
+                num_channels=20,
+                num_hidden=300,
+                learning_rate=0.005)
+    train(model, 20000, 100, data, epochs=200)
 
