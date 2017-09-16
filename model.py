@@ -96,7 +96,7 @@ def train(model, num_steps, batch_size, mnist):
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
         if i % 100 == 0:
-            print(accuracy)
+            print(accuracy, loss)
 
 
 if __name__ == '__main__':
