@@ -103,7 +103,7 @@ def train(model, num_steps, batch_size, mnist):
 
 if __name__ == '__main__':
     mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-    model = CNN(num_modules=1,
+    model = CNN(num_modules=3,
                 num_fc=2,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
