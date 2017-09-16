@@ -80,13 +80,22 @@ class CNN:
         return opt.minimize(loss, global_step)
 
 
+def one_hot(labels):
+    y_dim = np.max(labels) + 1
+    x_dim = len(labels)
+    onehot = np.zeros(y_dim*x_dim).reshape(x_dim,y_dim)
+    onehot[list(range(x_dim)), labels] = np.ones(x_dim)
+    return onehot
+
+
+
 def train(model, num_steps, batch_size, data, epochs):
     x_train = data[b'data']
     y_train = data[b'fine_labels']
-
-    onehot = np.zeros(100*len(y_train)).reshape(len(y_train),100)
-    onehot[list(range(len(y_train))), y_train] = np.ones(len(y_train))
-    y_train = onehot
+    y_train = one_hot(y_train)
+    # onehot = np.zeros(100*len(y_train)).reshape(len(y_train),100)
+    # onehot[list(range(len(y_train))), y_train] = np.ones(len(y_train))
+    # y_train = onehot
 
     x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
     y = tf.placeholder(tf.float32, [None, 100], 'output')
