@@ -24,7 +24,7 @@ class CNN:
         with tf.variable_scope(scope):
             ichannel = x.shape[-1].value
             w = tf.get_variable('weights', [self.ksize, self.ksize,
-                                            ichannel, self.num_channels])
+                                            ichannel, self.num_channels], initializer=tf.contrib.layers.xavier_initializer())
             b = tf.get_variable('bias', [self.num_channels])
             h = tf.nn.conv2d(x, w, self.kstride, 'SAME', name='conv') + b
             return tf.nn.relu(h)
@@ -40,7 +40,7 @@ class CNN:
                         activation=tf.nn.relu):
         with tf.variable_scope(scope):
             isize = x.shape[-1].value
-            w = tf.get_variable('weights', [isize, n_output])
+            w = tf.get_variable('weights', [isize, n_output], initializer=tf.contrib.layers.xavier_initializer())
             b = tf.get_variable('bias', [n_output])
             return activation(tf.matmul(x, w) + b)
 
