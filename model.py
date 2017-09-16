@@ -83,16 +83,16 @@ class CNN:
 def train(model, num_steps, batch_size, data, epochs):
     x_train = data[b'data']
     y_train = data[b'fine_labels']
-    # import IPython; IPython.embed()
+
     onehot = np.zeros(100*len(y_train)).reshape(len(y_train),100)
     onehot[list(range(len(y_train))), y_train] = np.ones(len(y_train))
     y_train = onehot
 
     x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
     y = tf.placeholder(tf.float32, [None, 100], 'output')
-    nn = model.inference()
-    loss_nn, accuracy_nn = model.loss(nn)
-    train_nn = model.train(loss_nn)
+    logits = model.inference()
+    loss, accuracy = model.loss(logits)
+    train = model.train(loss)
 
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
@@ -111,11 +111,10 @@ def train(model, num_steps, batch_size, data, epochs):
             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
 
-            calc = [loss_nn, accuracy_nn, train_nn, summary]
-            loss, accuracy, _, s = sess.run(calc, feed_dict)
-            writer.add_summary(s, i)
-
+            calc = [loss, accuracy, train, summary]
+            b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
             if i % 1000 == 0:
+                writer.add_summary(b_summ, i)
                 print(accuracy, loss)
 
 
