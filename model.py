@@ -136,6 +136,7 @@ def unpickle(file_):
 
 if __name__ == '__main__':
     train_data = unpickle('cifar-100-python/train')
+    test_data = unpickle('cifar-100-python/test')
     batch_size = 128
     epochs = 20
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
