@@ -107,6 +107,6 @@ if __name__ == '__main__':
                 kstride=[1, 2, 2, 1],
                 num_channels=10,
                 num_hidden=100,
-                learning_rate=0.01)
+                learning_rate=0.001)
     train(model, 20000, 100, mnist)
 
