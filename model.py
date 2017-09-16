@@ -81,11 +81,10 @@ class CNN:
         opt = tf.train.AdamOptimizer(self.learning_rate)
         return opt.minimize(loss, global_step)
 
-    def fit(self, ):
+    # def fit(self, ):
 
 
-    def evaluate(self):
-#     def
+    # def evaluate(self):
 
 
 # class Trainer:
