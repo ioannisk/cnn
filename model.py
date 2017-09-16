@@ -57,7 +57,6 @@ class CNN:
 
         isize = np.prod([d.value for d in x.shape[-3:]])
         x = tf.reshape(x, [-1, isize])
-        # x = tf.reshape(x, [-1, 28*28])
         for i in range(self.num_fc):
             scope = 'fully_connected_{}'.format(i)
             x = self.fully_connected(x, self.num_hidden, scope)
@@ -103,20 +102,29 @@ def train(model, num_steps, batch_size, mnist):
 
         calc = [loss_nn, accuracy_nn, train_nn, summary]
         loss, accuracy, _, s = sess.run(calc, feed_dict)
-        writer.add_summary(s)
+        writer.add_summary(s, i)
 
         if i % 100 == 0:
             print(accuracy, loss)
 
 
+def unpickle():
+    import pickle
+    with open('/home/ioannis/cifar/cifar-100-python/train', 'rb') as fo:
+        dict_ = pickle.load(fo, encoding='bytes')
+    return dict_
+
+
 if __name__ == '__main__':
-    mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-    model = CNN(num_modules=3,
-                num_fc=2,
-                ksize=3,
-                kstride=[1, 2, 2, 1],
-                num_channels=20,
-                num_hidden=300,
-                learning_rate=0.005)
-    train(model, 20000, 100, mnist)
+    dd = unpickle()
+    print(len(dd))
+    # mnist = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
+    # model = CNN(num_modules=3,
+    #             num_fc=2,
+    #             ksize=3,
+    #             kstride=[1, 2, 2, 1],
+    #             num_channels=20,
+    #             num_hidden=300,
+    #             learning_rate=0.005)
+    # train(model, 20000, 100, mnist)
 
