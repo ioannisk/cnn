@@ -84,8 +84,11 @@ class CNN:
 
 
 def train(model, num_steps, batch_size, data, epochs):
+    for key in data:
+        print(len(data[key]), key)
     x_train = data['data']
     y_train = data['fine_labels']
+    dicndicn
     x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
     y = tf.placeholder(tf.float32, [None, 100], 'output')
     nn = model.inference()
