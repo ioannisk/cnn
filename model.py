@@ -119,7 +119,7 @@ if __name__ == '__main__':
     dd = unpickle()
     # print(len(dd))
     for key in dd:
-        print(key)
+        print(len(dd[key]), key)
     # mnist = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
     # model = CNN(num_modules=3,
     #             num_fc=2,
