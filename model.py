@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from random import shuffle
-
+import os
 
 class CNN:
     def __init__(self,
@@ -98,7 +98,7 @@ def train(model, batch_size, train_data, test_data,  epochs):
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
 
-    writer = tf.summary.FileWriter('output', sess.graph)
+    writer = tf.summary.FileWriter('output/train', sess.graph)
     summary = tf.summary.merge_all()
 
     for e in range(epochs):
@@ -129,6 +129,8 @@ def unpickle(file_):
 if __name__ == '__main__':
     train_data = unpickle('cifar-100-python/train')
     test_data = unpickle('cifar-100-python/test')
+    if not os.path.exists('output'):
+        os.makedirs('output')
     batch_size = 128
     epochs = 200
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
