@@ -18,7 +18,6 @@ class CNN:
         self.learning_rate = learning_rate
         self.x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
         self.y = tf.placeholder(tf.float32, [None, 100], 'output')
-        self.dataset_descriminator = tf.placeholder(tf.string, 'dataset_descriminator')
 
     def conv2d(self, x, scope, num_channel):
         with tf.variable_scope(scope):
@@ -67,8 +66,8 @@ class CNN:
         correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(self.y, logits, scope='cross_entropy')
-        tf.summary.scalar('{} loss'.format(self.dataset_descriminator), loss)
-        tf.summary.scalar('{} accuracy'.format(self.dataset_descriminator), accuracy)
+        tf.summary.scalar('loss', loss)
+        tf.summary.scalar('accuracy', accuracy)
         return loss, accuracy
 
 
@@ -111,8 +110,7 @@ def train(model, batch_size, train_data, test_data,  epochs):
             ybatch = y_train[i:i+batch_size]
 
             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
-            feed_dict = {'input:0': xbatch, 'output:0': ybatch,
-                        'self.dataset_descriminator:0': 'Train'}
+            feed_dict = {'input:0': xbatch, 'output:0': ybatch}
 
             calc = [loss, accuracy, train, summary]
             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
