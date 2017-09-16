@@ -40,7 +40,8 @@ class CNN:
                         activation=tf.nn.relu):
         with tf.variable_scope(scope):
             isize = x.shape[-1].value
-            w = tf.get_variable('weights', [isize, n_output], initializer=tf.contrib.layers.xavier_initializer())
+            w = tf.get_variable('weights', [isize, n_output],
+                initializer=tf.contrib.layers.xavier_initializer())
             b = tf.get_variable('bias', [n_output])
             return activation(tf.matmul(x, w) + b)
 
@@ -48,7 +49,7 @@ class CNN:
         g = tf.get_default_graph()
         x = g.get_tensor_by_name('input:0')
 
-        for i in range(self.num_channels):
+        for i in range(self.num_modules):
             with tf.variable_scope('module_{}'.format(i)):
                 x = self.conv2d(x, 'conv1')
                 # x = self.conv2d(x, 'conv2')
@@ -92,7 +93,7 @@ def train(model, num_steps, batch_size, mnist):
 
     for i in range(num_steps):
         xbatch, ybatch = mnist.train.next_batch(batch_size)
-        xbatch = np.reshape(xbatch, [-1, 28,28,1])
+        xbatch = np.reshape(xbatch, [-1, 28, 28,1])
         feed_dict = {'input:0': xbatch, 'output:0': ybatch}
         calc = [loss_nn, accuracy_nn, train_nn]
         loss, accuracy, _ = sess.run(calc, feed_dict)
