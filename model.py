@@ -46,10 +46,9 @@ class CNN:
 
     def inference(self):
         # x = self.x
-        x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
         for i, num_channel in enumerate(self.num_channels):
             with tf.variable_scope('module_{}'.format(i)):
-                x = self.conv2d(x, 'conv1', num_channel)
+                x = self.conv2d(self.x, 'conv1', num_channel)
                 x = self.conv2d(x, 'conv2', num_channel)
                 x = self.pool(x)
 
@@ -68,10 +67,9 @@ class CNN:
         # g = tf.get_default_graph()
         # y = g.get_tensor_by_name('output:0')
         # y = self.y
-        y = tf.placeholder(tf.float32, [None, 100], 'output')
-        correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
+        correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
+        loss = tf.losses.softmax_cross_entropy(self.y, logits, scope='cross_entropy')
         tf.summary.scalar('loss', loss)
         tf.summary.scalar('accuracy', accuracy)
         return loss, accuracy
