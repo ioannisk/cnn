@@ -101,7 +101,7 @@ class Trainer:
         self.train_writer = tf.summary.FileWriter('output/train', self.sess.graph)
         self.test_writer = tf.summary.FileWriter('output/test')
 
-    def train(self):
+    def trainer(self):
         for e in range(self.num_epochs):
             data = list(zip(x_train, y_train))
             shuffle(data)
@@ -195,5 +195,5 @@ if __name__ == '__main__':
                 learning_rate=0.001)
     # train(model, batch_size, train_data, test_data, num_epochs=num_epochs)
     trainer = Trainer(model, batch_size, train_data, test_data)
-    trainer.train()
+    trainer.trainer()
 
