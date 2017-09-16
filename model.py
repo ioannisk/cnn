@@ -86,12 +86,10 @@ class CNN:
 def train(model, num_steps, batch_size, data, epochs):
     x_train = data[b'data']
     y_train = data[b'fine_labels']
-    print(x_train.shape)
-    # print(len(y_train[0]))
-    for i in y_train:
-        print(i)
-    # print(y_train.shape)
-    dvfv
+    onehot = np.zeros(100*len(y_train)).reshape(100*len(y_train))
+    onehot[list(range(y_train)), y_train] = np.ones(len(y_train))
+    y_train = onehot
+
     x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
     y = tf.placeholder(tf.float32, [None, 100], 'output')
     nn = model.inference()
@@ -104,9 +102,6 @@ def train(model, num_steps, batch_size, data, epochs):
     writer = tf.summary.FileWriter('output', sess.graph)
     summary = tf.summary.merge_all()
 
-    # batch_start = 0
-    # for i in range(num_steps):
-        # xbatch, ybatch = mnist.train.next_batch(batch_size)
     for e in range(epochs):
         data = list(zip(x_train, y_train))
         shuffle(data)
