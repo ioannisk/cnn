@@ -87,6 +87,7 @@ def train(model, num_steps, batch_size, data, epochs):
     x_train = data[b'data']
     y_train = data[b'fine_labels']
     print(x_train.shape)
+    print(len(y_train[0]))
     print(y_train.shape)
     dvfv
     x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
