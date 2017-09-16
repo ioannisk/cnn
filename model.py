@@ -91,8 +91,8 @@ class Trainer:
         self.num_epochs = num_epochs
 
         self.logits = model.inference()
-        self.loss, self.accuracy = model.evaluate(logits)
-        self.train = model.train(loss)
+        self.loss, self.accuracy = model.evaluate(self.logits)
+        self.train = model.train(self.loss)
 
         self.sess = tf.Session()
         sess.run(tf.global_variables_initializer())
