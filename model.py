@@ -132,7 +132,7 @@ def unpickle():
 if __name__ == '__main__':
     data = unpickle()
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
-    model = CNN(num_modules=4,
+    model = CNN(num_modules=2,
                 num_fc=2,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
