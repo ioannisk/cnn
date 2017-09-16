@@ -98,7 +98,7 @@ class Trainer:
         self.sess.run(tf.global_variables_initializer())
 
         self.summary = tf.summary.merge_all()
-        self.train_writer = tf.summary.FileWriter('output/train', sess.graph)
+        self.train_writer = tf.summary.FileWriter('output/train', self.sess.graph)
         self.test_writer = tf.summary.FileWriter('output/test')
 
     def train(self):
