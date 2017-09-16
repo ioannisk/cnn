@@ -46,13 +46,10 @@ class CNN:
             return activation(tf.matmul(x, w) + b)
 
     def inference(self):
-        # g = tf.get_default_graph()
-        # x = g.get_tensor_by_name('input:0')
-        x = self.x
-        # for i in range(self.num_modules):
+        # x = self.x
         for i, num_channel in enumerate(self.num_channels):
             with tf.variable_scope('module_{}'.format(i)):
-                x = self.conv2d(x, 'conv1', num_channel)
+                x = self.conv2d(self.x, 'conv1', num_channel)
                 x = self.conv2d(x, 'conv2', num_channel)
                 x = self.pool(x)
 
@@ -70,8 +67,8 @@ class CNN:
     def loss(self, logits):
         # g = tf.get_default_graph()
         # y = g.get_tensor_by_name('output:0')
-        y = self.y
-        correct_prediction = tf.equal(tf.argmax(logits,1), tf.argmax(y,1))
+        # y = self.y
+        correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
         tf.summary.scalar('loss', loss)
@@ -98,8 +95,6 @@ def train(model, batch_size, train_data, test_data,  epochs):
     y_train = train_data[b'fine_labels']
     y_train = one_hot(y_train)
 
-    # x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
-    # y = tf.placeholder(tf.float32, [None, 100], 'output')
     logits = model.inference()
     loss, accuracy = model.loss(logits)
     train = model.train(loss)
