@@ -79,7 +79,7 @@ class CNN:
 
 
 # class Trainer:
-#     def __init__(model, batch_size, train_data, test_data, epochs=200):
+#     def __init__(model, batch_size, train_data, test_data, num_epochs=200):
 #         x_train, y_train = train_data
 #         x_test, y_test = test_data
 
@@ -89,11 +89,39 @@ class CNN:
 #         self.y_train = y_train
 #         self.x_test = x_test
 #         self.y_test = y_test
-#         self.epochs = epochs
+#         self.num_epochs = num_epochs
 
-#         logits = model.inference()
-#         loss, accuracy = model.evaluate(logits)
-#         train = model.train(loss)
+#         self.logits = model.inference()
+#         self.loss, self.accuracy = model.evaluate(logits)
+#         self.train = model.train(loss)
+
+#         self.sess = tf.Session()
+#         sess.run(tf.global_variables_initializer())
+
+#         self.summary = tf.summary.merge_all()
+#         self.train_writer = tf.summary.FileWriter('output/train', sess.graph)
+#         self.test_writer = tf.summary.FileWriter('output/test')
+
+#     def train(self):
+#         for e in range(self.epochs):
+#             data = list(zip(x_train, y_train))
+#             shuffle(data)
+#             x_train, y_train = zip(*data)
+
+#     def feed_epoch(self):
+#         for i in range(0, len(x_train), batch_size):
+#             xbatch = x_train[i:i+batch_size]
+#             ybatch = y_train[i:i+batch_size]
+
+#             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
+#             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
+
+#             calc = [loss, accuracy, train, summary]
+#             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
+#             if i % 1000 == 0:
+#                 train_writer.add_summary(b_summ, i)
+
+#                 print(b_accuracy, b_loss)
 
 
 
@@ -101,7 +129,8 @@ class CNN:
 
 
 
-def train(model, batch_size, train_data, test_data,  epochs):
+
+def train(model, batch_size, train_data, test_data,  num_epochs):
     x_train, y_train = train_data
     x_test, y_test = test_data
 
@@ -116,7 +145,7 @@ def train(model, batch_size, train_data, test_data,  epochs):
     train_writer = tf.summary.FileWriter('output/train', sess.graph)
     test_writer = tf.summary.FileWriter('output/test')
 
-    for e in range(epochs):
+    for e in range(num_epochs):
         data = list(zip(x_train, y_train))
         shuffle(data)
         x_train, y_train = zip(*data)
@@ -158,12 +187,12 @@ if __name__ == '__main__':
     test_data = read_data('cifar-100-python/test')
 
     batch_size = 128
-    epochs = 200
+    num_epochs = 200
     model = CNN(
                 ksize=3,
                 kstride=[1, 1, 1, 1],
                 num_channels=[32,64],
                 num_hidden=[600],
                 learning_rate=0.001)
-    train(model, batch_size, train_data, test_data, epochs=epochs)
+    train(model, batch_size, train_data, test_data, num_epochs=num_epochs)
 
