@@ -87,7 +87,7 @@ def train(model, num_steps, batch_size, data, epochs):
     x_train = data[b'data']
     y_train = data[b'fine_labels']
     import IPython; IPython.embed()
-    onehot = np.zeros(100*len(y_train)).reshape(100*len(y_train))
+    onehot = np.zeros(100*len(y_train)).reshape(100,len(y_train))
     onehot[list(range(len(y_train))), y_train] = np.ones(len(y_train))
     y_train = onehot
 
