@@ -78,6 +78,29 @@ class CNN:
         return opt.minimize(loss, global_step)
 
 
+# class Trainer:
+#     def __init__(model, batch_size, train_data, test_data, epochs=200):
+#         x_train, y_train = train_data
+#         x_test, y_test = test_data
+
+#         self.model = model
+#         self.batch_size = batch_size
+#         self.x_train = x_train
+#         self.y_train = y_train
+#         self.x_test = x_test
+#         self.y_test = y_test
+#         self.epochs = epochs
+
+#         logits = model.inference()
+#         loss, accuracy = model.evaluate(logits)
+#         train = model.train(loss)
+
+
+
+
+
+
+
 def train(model, batch_size, train_data, test_data,  epochs):
     x_train, y_train = train_data
     x_test, y_test = test_data
@@ -128,17 +151,14 @@ def read_data(file_):
     ys = one_hot(ys)
     return (xs, ys)
 
-
 if __name__ == '__main__':
     if not os.path.exists('output'):
         os.makedirs('output')
-
     train_data = read_data('cifar-100-python/train')
     test_data = read_data('cifar-100-python/test')
 
     batch_size = 128
     epochs = 200
-    # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
     model = CNN(
                 ksize=3,
                 kstride=[1, 1, 1, 1],
