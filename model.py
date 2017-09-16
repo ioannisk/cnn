@@ -95,7 +95,7 @@ class Trainer:
         self.train = model.train(self.loss)
 
         self.sess = tf.Session()
-        sess.run(tf.global_variables_initializer())
+        self.sess.run(tf.global_variables_initializer())
 
         self.summary = tf.summary.merge_all()
         self.train_writer = tf.summary.FileWriter('output/train', sess.graph)
@@ -117,7 +117,7 @@ class Trainer:
             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
 
             calc = [self.loss, self.accuracy, self.train, self.summary]
-            b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
+            b_loss, b_accuracy, _, b_summ = self.sess.run(calc, feed_dict)
             if i % 1000 == 0:
                 train_writer.add_summary(b_summ, i)
                 print(b_accuracy, b_loss)
