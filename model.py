@@ -18,7 +18,7 @@ class CNN:
         self.learning_rate = learning_rate
         self.x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
         self.y = tf.placeholder(tf.float32, [None, 100], 'output')
-        self.dataset_descriminator = tf.placeholder(tf.string, [1], 'dataset_descriminator')
+        self.dataset_descriminator = tf.placeholder(tf.string, 'dataset_descriminator')
 
     def conv2d(self, x, scope, num_channel):
         with tf.variable_scope(scope):
@@ -112,7 +112,7 @@ def train(model, batch_size, train_data, test_data,  epochs):
 
             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
             feed_dict = {'input:0': xbatch, 'output:0': ybatch,
-                        'self.dataset_descriminator': 'Train'}
+                        'self.dataset_descriminator:0': 'Train'}
 
             calc = [loss, accuracy, train, summary]
             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
