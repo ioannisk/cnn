@@ -19,6 +19,11 @@ class CNN:
         self.learning_rate = learning_rate
         self.x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
         self.y = tf.placeholder(tf.float32, [None, 100], 'output')
+        self.logits = inference()
+        self.loss, self.accuracy = evaluate(self.logits)
+        self.train = train(self.loss)
+
+
 
     def conv2d(self, x, scope, num_channel):
         with tf.variable_scope(scope):
@@ -71,14 +76,15 @@ class CNN:
         tf.summary.scalar('accuracy', accuracy)
         return loss, accuracy
 
-
     def train(self, loss):
         global_step = tf.Variable(0, name='global_step', trainable=False)
         opt = tf.train.AdamOptimizer(self.learning_rate)
         return opt.minimize(loss, global_step)
 
-#     def fit(self, ):
+    def fit(self, ):
 
+
+    def evaluate(self):
 #     def
 
 
