@@ -137,7 +137,7 @@ if __name__ == '__main__':
                 ksize=3,
                 kstride=[1, 2, 2, 1],
                 num_channels=64,
-                num_hidden=300,
-                learning_rate=0.005)
+                num_hidden=500,
+                learning_rate=0.05)
     train(model, 20000, 100, data, epochs=200)
 
