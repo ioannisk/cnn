@@ -79,7 +79,7 @@ class CNN:
 
 
 class Trainer:
-    def __init__(model, batch_size, train_data, test_data, num_epochs=200):
+    def __init__(self, model, batch_size, train_data, test_data, num_epochs=200):
         x_train, y_train = train_data
         x_test, y_test = test_data
         self.model = model
