@@ -105,8 +105,8 @@ if __name__ == '__main__':
                 num_fc=2,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
-                num_channels=10,
+                num_channels=20,
                 num_hidden=100,
-                learning_rate=0.001)
+                learning_rate=0.05)
     train(model, 20000, 100, mnist)
 
