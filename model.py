@@ -115,7 +115,7 @@ def train(model, num_steps, batch_size, data, epochs):
             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
             if i % 1000 == 0:
                 writer.add_summary(b_summ, i)
-                print(accuracy, loss)
+                print(b_accuracy, b_loss)
 
 
 def unpickle():
