@@ -89,9 +89,9 @@ def one_hot(labels):
 
 
 
-def train(model, num_steps, batch_size, data, epochs):
-    x_train = data[b'data']
-    y_train = data[b'fine_labels']
+def train(model, batch_size, train_data, test_data,  epochs):
+    x_train = train_data[b'data']
+    y_train = train_data[b'fine_labels']
     y_train = one_hot(y_train)
     # onehot = np.zeros(100*len(y_train)).reshape(len(y_train),100)
     # onehot[list(range(len(y_train))), y_train] = np.ones(len(y_train))
@@ -127,15 +127,17 @@ def train(model, num_steps, batch_size, data, epochs):
                 print(b_accuracy, b_loss)
 
 
-def unpickle():
+def unpickle(file_):
     import pickle
-    with open('/home/ioannis/cifar/cifar-100-python/train', 'rb') as fo:
+    with open(file_, 'rb') as fo:
         dict_ = pickle.load(fo, encoding='bytes')
     return dict_
 
 
 if __name__ == '__main__':
-    data = unpickle()
+    train_data = unpickle('cifar-100-python/train')
+    batch_size = 128
+    epochs = 20
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
     model = CNN(
                 ksize=3,
@@ -143,5 +145,5 @@ if __name__ == '__main__':
                 num_channels=[32,64],
                 num_hidden=[600],
                 learning_rate=0.001)
-    train(model, 20000, 128, data, epochs=200)
+    train(model, batch_size, train_data, test_data, epochs=epochs)
 
