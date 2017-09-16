@@ -108,5 +108,5 @@ if __name__ == '__main__':
                 num_channels=10,
                 num_hidden=100,
                 learning_rate=0.01)
-    train(model, 2000, 100, mnist)
+    train(model, 20000, 100, mnist)
 
