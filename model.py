@@ -70,7 +70,7 @@ class CNN:
         # y = self.y
         correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
+        loss = tf.losses.softmax_cross_entropy(self.y, logits, scope='cross_entropy')
         tf.summary.scalar('loss', loss)
         tf.summary.scalar('accuracy', accuracy)
         return loss, accuracy
