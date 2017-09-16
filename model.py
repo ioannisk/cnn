@@ -73,6 +73,8 @@ class CNN:
         correct_prediction = tf.equal(tf.argmax(logits,1), tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
+        tf.summary.scalar('loss', loss)
+        tf.summary.scalar('accuracy', accuracy)
         return loss, accuracy
 
     def train(self, loss):
@@ -91,12 +93,18 @@ def train(model, num_steps, batch_size, mnist):
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
 
+    writer = tf.summary.FileWriter('output', sess.graph)
+    summary = tf.summary.merge_all()
+
     for i in range(num_steps):
         xbatch, ybatch = mnist.train.next_batch(batch_size)
         xbatch = np.reshape(xbatch, [-1, 28, 28,1])
         feed_dict = {'input:0': xbatch, 'output:0': ybatch}
-        calc = [loss_nn, accuracy_nn, train_nn]
-        loss, accuracy, _ = sess.run(calc, feed_dict)
+
+        calc = [loss_nn, accuracy_nn, train_nn, summary]
+        loss, accuracy, _, s = sess.run(calc, feed_dict)
+        writer.add_summary(s)
+
         if i % 100 == 0:
             print(accuracy, loss)
 
