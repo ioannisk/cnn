@@ -118,7 +118,7 @@ def train(model, num_steps, batch_size, data, epochs):
             loss, accuracy, _, s = sess.run(calc, feed_dict)
             writer.add_summary(s, i)
 
-            if i % 100 == 0:
+            if i % 1000 == 0:
                 print(accuracy, loss)
 
 
@@ -132,11 +132,11 @@ def unpickle():
 if __name__ == '__main__':
     data = unpickle()
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
-    model = CNN(num_modules=3,
+    model = CNN(num_modules=4,
                 num_fc=2,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
-                num_channels=20,
+                num_channels=64,
                 num_hidden=300,
                 learning_rate=0.005)
     train(model, 20000, 100, data, epochs=200)
