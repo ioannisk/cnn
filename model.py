@@ -18,7 +18,7 @@ class CNN:
         self.learning_rate = learning_rate
         self.x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
         self.y = tf.placeholder(tf.float32, [None, 100], 'output')
-        self.dataset_descriminator = tf.placeholder(tf.string, [1], 'dataset_descriminator')
+        self.dataset_descriminator = tf.placeholder(tf.string, 'dataset_descriminator')
 
     def conv2d(self, x, scope, num_channel):
         with tf.variable_scope(scope):
