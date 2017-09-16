@@ -75,7 +75,7 @@ class CNN:
 
     def train(self, loss):
         global_step = tf.Variable(0, name='global_step', trainable=False)
-        opt = tf.train.AdamOptimizer(self.learning_rate)
+        opt = tf.train.GradientDescentOptimizer(self.learning_rate)
         return opt.minimize(loss, global_step)
 
 
