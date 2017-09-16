@@ -131,9 +131,9 @@ if __name__ == '__main__':
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
     model = CNN(
                 ksize=3,
-                kstride=[1, 2, 2, 1],
+                kstride=[1, 1, 1, 1],
                 num_channels=[32,64],
                 num_hidden=[600],
                 learning_rate=0.001)
-    train(model, 20000, 32, data, epochs=200)
+    train(model, 20000, 128, data, epochs=200)
 
