@@ -63,7 +63,7 @@ class CNN:
             x = self.fully_connected(x, self.num_hidden, scope)
 
         scope = 'output'
-        logits = self.fully_connected(x, 10, scope, lambda x: x)
+        logits = self.fully_connected(x, 100, scope, lambda x: x)
 
         return logits
 
