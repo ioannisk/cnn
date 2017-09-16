@@ -102,7 +102,7 @@ class Trainer:
         self.test_writer = tf.summary.FileWriter('output/test')
 
     def train(self):
-        for e in range(self.epochs):
+        for e in range(self.num_epochs):
             data = list(zip(x_train, y_train))
             shuffle(data)
             x_train, y_train = zip(*data)
