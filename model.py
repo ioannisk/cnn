@@ -3,6 +3,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from random import shuffle
 import os
+import pickle
 
 class CNN:
     def __init__(self,
@@ -77,19 +78,9 @@ class CNN:
         return opt.minimize(loss, global_step)
 
 
-def one_hot(labels):
-    y_dim = np.max(labels) + 1
-    x_dim = len(labels)
-    onehot = np.zeros(y_dim*x_dim).reshape(x_dim,y_dim)
-    onehot[list(range(x_dim)), labels] = np.ones(x_dim)
-    return onehot
-
-
-
 def train(model, batch_size, train_data, test_data,  epochs):
-    x_train = train_data[b'data']
-    y_train = train_data[b'fine_labels']
-    y_train = one_hot(y_train)
+    x_train, y_train = train_data
+    x_test, y_test = test_data
 
     logits = model.inference()
     loss, accuracy = model.evaluate(logits)
@@ -98,8 +89,9 @@ def train(model, batch_size, train_data, test_data,  epochs):
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
 
-    writer = tf.summary.FileWriter('output/train', sess.graph)
     summary = tf.summary.merge_all()
+    train_writer = tf.summary.FileWriter('output/train', sess.graph)
+    test_writer = tf.summary.FileWriter('output/test')
 
     for e in range(epochs):
         data = list(zip(x_train, y_train))
@@ -115,22 +107,35 @@ def train(model, batch_size, train_data, test_data,  epochs):
             calc = [loss, accuracy, train, summary]
             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
             if i % 1000 == 0:
-                writer.add_summary(b_summ, i)
+                train_writer.add_summary(b_summ, i)
+
                 print(b_accuracy, b_loss)
 
 
-def unpickle(file_):
-    import pickle
+def one_hot(labels):
+    y_dim = np.max(labels) + 1
+    x_dim = len(labels)
+    onehot = np.zeros(y_dim*x_dim).reshape(x_dim,y_dim)
+    onehot[list(range(x_dim)), labels] = np.ones(x_dim)
+    return onehot
+
+
+def read_data(file_):
     with open(file_, 'rb') as fo:
         dict_ = pickle.load(fo, encoding='bytes')
-    return dict_
+    xs = dict_[b'data']
+    ys = dict_[b'fine_labels']
+    ys = one_hot(ys)
+    return (xs, ys)
 
 
 if __name__ == '__main__':
-    train_data = unpickle('cifar-100-python/train')
-    test_data = unpickle('cifar-100-python/test')
     if not os.path.exists('output'):
         os.makedirs('output')
+
+    train_data = read_data('cifar-100-python/train')
+    test_data = read_data('cifar-100-python/test')
+
     batch_size = 128
     epochs = 200
     # data = input_data.read_data_sets('/Users/yannis/Playground/data/MNIST_data', one_hot=True)
