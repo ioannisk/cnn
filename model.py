@@ -16,6 +16,9 @@ class CNN:
         self.num_channels = num_channels
         self.num_hidden = num_hidden
         self.learning_rate = learning_rate
+        self.x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
+        self.y = tf.placeholder(tf.float32, [None, 100], 'output')
+
 
     def conv2d(self, x, scope, num_channel):
         with tf.variable_scope(scope):
@@ -43,9 +46,9 @@ class CNN:
             return activation(tf.matmul(x, w) + b)
 
     def inference(self):
-        g = tf.get_default_graph()
-        x = g.get_tensor_by_name('input:0')
-
+        # g = tf.get_default_graph()
+        # x = g.get_tensor_by_name('input:0')
+        x = self.x
         # for i in range(self.num_modules):
         for i, num_channel in enumerate(self.num_channels):
             with tf.variable_scope('module_{}'.format(i)):
@@ -65,8 +68,9 @@ class CNN:
         return logits
 
     def loss(self, logits):
-        g = tf.get_default_graph()
-        y = g.get_tensor_by_name('output:0')
+        # g = tf.get_default_graph()
+        # y = g.get_tensor_by_name('output:0')
+        y = self.y
         correct_prediction = tf.equal(tf.argmax(logits,1), tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(y, logits, scope='cross_entropy')
@@ -93,12 +97,9 @@ def train(model, batch_size, train_data, test_data,  epochs):
     x_train = train_data[b'data']
     y_train = train_data[b'fine_labels']
     y_train = one_hot(y_train)
-    # onehot = np.zeros(100*len(y_train)).reshape(len(y_train),100)
-    # onehot[list(range(len(y_train))), y_train] = np.ones(len(y_train))
-    # y_train = onehot
 
-    x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
-    y = tf.placeholder(tf.float32, [None, 100], 'output')
+    # x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
+    # y = tf.placeholder(tf.float32, [None, 100], 'output')
     logits = model.inference()
     loss, accuracy = model.loss(logits)
     train = model.train(loss)
