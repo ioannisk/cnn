@@ -101,12 +101,12 @@ def train(model, num_steps, batch_size, mnist):
 
 if __name__ == '__main__':
     mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-    model = CNN(num_modules=10,
-                num_fc=5,
+    model = CNN(num_modules=2,
+                num_fc=2,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
                 num_channels=20,
-                num_hidden=100,
+                num_hidden=300,
                 learning_rate=0.05)
     train(model, 20000, 100, mnist)
 
