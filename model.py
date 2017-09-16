@@ -52,7 +52,7 @@ class CNN:
             with tf.variable_scope('module_{}'.format(i)):
                 x = self.conv2d(x, 'conv1')
                 x = self.conv2d(x, 'conv2')
-                x = self.pool(x)
+                # x = self.pool(x)
 
         isize = np.prod([d.value for d in x.shape[-3:]])
         x = tf.reshape(x, [-1, isize])
@@ -101,8 +101,8 @@ def train(model, num_steps, batch_size, mnist):
 
 if __name__ == '__main__':
     mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-    model = CNN(num_modules=1,
-                num_fc=2,
+    model = CNN(num_modules=5,
+                num_fc=3,
                 ksize=3,
                 kstride=[1, 2, 2, 1],
                 num_channels=20,
