@@ -52,7 +52,7 @@ class CNN:
         for i in range(self.num_modules):
             with tf.variable_scope('module_{}'.format(i)):
                 x = self.conv2d(x, 'conv1')
-                # x = self.conv2d(x, 'conv2')
+                x = self.conv2d(x, 'conv2')
                 # x = self.pool(x)
 
         isize = np.prod([d.value for d in x.shape[-3:]])
