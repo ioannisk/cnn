@@ -45,7 +45,6 @@ class CNN:
             return activation(tf.matmul(x, w) + b)
 
     def inference(self):
-        # x = self.x
         for i, num_channel in enumerate(self.num_channels):
             with tf.variable_scope('module_{}'.format(i)):
                 x = self.conv2d(self.x, 'conv1', num_channel)
@@ -63,16 +62,14 @@ class CNN:
 
         return logits
 
-    def loss(self, logits):
-        # g = tf.get_default_graph()
-        # y = g.get_tensor_by_name('output:0')
-        # y = self.y
+    def evaluate(self, logits):
         correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(self.y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         loss = tf.losses.softmax_cross_entropy(self.y, logits, scope='cross_entropy')
         tf.summary.scalar('loss', loss)
         tf.summary.scalar('accuracy', accuracy)
         return loss, accuracy
+
 
     def train(self, loss):
         global_step = tf.Variable(0, name='global_step', trainable=False)
@@ -95,7 +92,7 @@ def train(model, batch_size, train_data, test_data,  epochs):
     y_train = one_hot(y_train)
 
     logits = model.inference()
-    loss, accuracy = model.loss(logits)
+    loss, accuracy = model.evaluate(logits)
     train = model.train(loss)
 
     sess = tf.Session()
