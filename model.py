@@ -1,3 +1,4 @@
+
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
@@ -19,11 +20,6 @@ class CNN:
         self.learning_rate = learning_rate
         self.x = tf.placeholder(tf.float32, [None, 32, 32, 3], 'input')
         self.y = tf.placeholder(tf.float32, [None, 100], 'output')
-        self.logits = inference()
-        self.loss, self.accuracy = evaluate(self.logits)
-        self.train = train(self.loss)
-
-
 
     def conv2d(self, x, scope, num_channel):
         with tf.variable_scope(scope):
@@ -81,79 +77,28 @@ class CNN:
         opt = tf.train.AdamOptimizer(self.learning_rate)
         return opt.minimize(loss, global_step)
 
-    # def fit(self, ):
 
+def evaluate(model, batch_size=800, test_data):
+    x_test, y_test = test_data
 
-    # def evaluate(self):
+    logits = model.inference()
+    loss, accuracy = model.loss_acc(logits)
 
+    for i in range(0, len(x_test), batch_size):
+        xbatch = x_test[i:i+batch_size]
+        ybatch = y_test[i:i+batch_size]
 
-# class Trainer:
-#     def __init__(self, model, batch_size, train_data, test_data, num_epochs=200):
-#         x_train, y_train = train_data
-#         x_test, y_test = test_data
-#         self.model = model
-#         self.batch_size = batch_size
-#         self.x_train = x_train
-#         self.y_train = y_train
-#         self.x_test = x_test
-#         self.y_test = y_test
-#         self.num_epochs = num_epochs
+        xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
+        feed_dict = {'input:0': xbatch, 'output:0': ybatch}
 
-#         self.logits = model.inference()
-#         self.loss, self.accuracy = model.evaluate(self.logits)
-#         self.train = model.train(self.loss)
-
-#         self.sess = tf.Session()
-#         self.sess.run(tf.global_variables_initializer())
-
-#         self.summary = tf.summary.merge_all()
-#         self.train_writer = tf.summary.FileWriter('output/train', self.sess.graph)
-#         self.test_writer = tf.summary.FileWriter('output/test')
-
-#     def trainer(self):
-#         for e in range(self.num_epochs):
-#             data = list(zip(self.x_train, self.y_train))
-#             shuffle(data)
-#             x_train, y_train = zip(*data)
-#             train_epoch()
-
-#     def train_epoch(self):
-#         for i in range(0, len(self.x_train), self.batch_size):
-#             xbatch = self.x_train[i:i+self.batch_size]
-#             ybatch = self.y_train[i:i+self.batch_size]
-
-#             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
-#             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
-
-#             calc = [self.loss, self.accuracy, self.train, self.summary]
-#             b_loss, b_accuracy, _, b_summ = self.sess.run(calc, feed_dict)
-#             if i % 1000 == 0:
-#                 train_writer.add_summary(b_summ, i)
-#                 print(b_accuracy, b_loss)
-    # def evaluate(self)
-
-
-# def evaluate(model, test_data):
-#         for i in range(0, len(x_train), batch_size):
-#             xbatch = x_train[i:i+batch_size]
-#             ybatch = y_train[i:i+batch_size]
-
-#             xbatch = np.reshape(xbatch, [-1, 32, 32, 3])
-#             feed_dict = {'input:0': xbatch, 'output:0': ybatch}
-
-#             calc = [loss, accuracy, train, summary]
-#             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
-#             if i % 1000 == 0:
-#                 train_writer.add_summary(b_summ, i)
-
-#                 print(b_accuracy, b_loss)
-
+        calc = [loss, accuracy,  summary]
+        b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
 
 
 
 def train(model, batch_size, train_data, test_data,  num_epochs):
     x_train, y_train = train_data
-    x_test, y_test = test_data
+
 
     logits = model.inference()
     loss, accuracy = model.loss_acc(logits)
@@ -181,7 +126,6 @@ def train(model, batch_size, train_data, test_data,  num_epochs):
             b_loss, b_accuracy, _, b_summ = sess.run(calc, feed_dict)
             if i % 1000 == 0:
                 train_writer.add_summary(b_summ, i)
-
                 print(b_accuracy, b_loss)
 
 
