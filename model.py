@@ -148,8 +148,8 @@ def read_data(file_):
 if __name__ == '__main__':
     if not os.path.exists('output'):
         os.makedirs('output')
-    train_data = read_data('cifar-100-python/train')
-    test_data = read_data('cifar-100-python/test')
+    train_data = read_data('../datasets/cifar-100-python/train')
+    test_data = read_data('../datasets/cifar-100-python/test')
 
     batch_size = 128
     num_epochs = 200
